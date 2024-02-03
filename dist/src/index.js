@@ -245,15 +245,19 @@ Object.assign(fields, {
     }
 });
 var getCommits = function() {
-    var _ref = _async_to_generator(function() {
-        var from, to, paths, result;
+    var _ref = _async_to_generator(function(from) {
+        var to, paths, result;
         var _arguments = arguments;
         return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
-                    from = _arguments.length > 0 && _arguments[0] !== void 0 ? _arguments[0] : "c76319b301d20f2fbbf6585bfe7e9dc466b1f99f", to = _arguments.length > 1 && _arguments[1] !== void 0 ? _arguments[1] : "HEAD", paths = _arguments.length > 2 && _arguments[2] !== void 0 ? _arguments[2] : [
+                    to = _arguments.length > 1 && _arguments[1] !== void 0 ? _arguments[1] : "HEAD", paths = _arguments.length > 2 && _arguments[2] !== void 0 ? _arguments[2] : [
                         "--",
                         "../commerce"
+                    ];
+                    if (!from) return [
+                        3,
+                        2
                     ];
                     return [
                         4,
@@ -282,10 +286,15 @@ var getCommits = function() {
                             }
                         })
                     ];
+                case 2:
+                    return [
+                        2,
+                        []
+                    ];
             }
         });
     });
-    return function getCommits() {
+    return function getCommits(from) {
         return _ref.apply(this, arguments);
     };
 }();
@@ -303,7 +312,7 @@ var argv = yargs(process.argv.slice(2)).scriptName("pipeline-detect-changes").us
     });
 }, function() {
     var _ref = _async_to_generator(function(argv) {
-        var paths, commits;
+        var paths, from, to, commits;
         return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
@@ -312,9 +321,10 @@ var argv = yargs(process.argv.slice(2)).scriptName("pipeline-detect-changes").us
                         "--",
                         argv.path
                     ] : [];
+                    from = argv.from, to = argv.to;
                     return [
                         4,
-                        getCommits(argv.from, argv.to, paths)
+                        getCommits(from, to, paths)
                     ];
                 case 1:
                     commits = _state.sent();
