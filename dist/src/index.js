@@ -338,13 +338,11 @@ var argv = yargs(process.argv.slice(2)).scriptName("pipeline-detect-changes").us
                 case 2:
                     result = _state.sent();
                     if (result === null) {
-                        console.log("return code 0");
                         return [
                             2,
                             process.exit(0)
                         ];
                     }
-                    console.log("return code 1");
                     return [
                         2,
                         process.exit(1)
