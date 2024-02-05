@@ -312,7 +312,7 @@ var argv = yargs(process.argv.slice(2)).scriptName("pipeline-detect-changes").us
     });
 }, function() {
     var _ref = _async_to_generator(function(argv) {
-        var paths, from, to, commits;
+        var paths, from, to, commits, result;
         return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
@@ -328,12 +328,26 @@ var argv = yargs(process.argv.slice(2)).scriptName("pipeline-detect-changes").us
                     ];
                 case 1:
                     commits = _state.sent();
-                    analyzeCommits({}, {
-                        commits: commits,
-                        logger: console
-                    });
                     return [
-                        2
+                        4,
+                        analyzeCommits({}, {
+                            commits: commits,
+                            logger: console
+                        })
+                    ];
+                case 2:
+                    result = _state.sent();
+                    if (result === null) {
+                        console.log("return code 0");
+                        return [
+                            2,
+                            process.exit(0)
+                        ];
+                    }
+                    console.log("return code 1");
+                    return [
+                        2,
+                        process.exit(1)
                     ];
             }
         });

@@ -95,7 +95,13 @@ const argv = yargs(process.argv.slice(2))
       const paths:string[] = argv.path ? ["--", argv.path] : [];
       const  { from, to } = argv;
       const commits = await getCommits(from as string, to as string, paths);
-      analyzeCommits({}, { commits, logger: console });
+      const result = await analyzeCommits({}, { commits, logger: console });
+      
+      if(result === null) {
+        return process.exit(0);
+      }
+      
+      return process.exit(1);
     }
   )
   .parse();
