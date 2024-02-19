@@ -43,7 +43,11 @@ Object.assign(fields, {
   committerDate: { key: "ci", type: Date },
 });
 
-const getCommits = async (from: string, to:string = "HEAD", paths:string[] = ["--", "../commerce"]) => {
+const getCommits = async (
+  from: string,
+  to: string = "HEAD",
+  paths: string[] = ["--", "../commerce"]
+) => {
   if (from) {
     const result: Commit[] = await array(
       parse({
@@ -92,15 +96,15 @@ const argv = yargs(process.argv.slice(2))
     },
     async (argv) => {
       // @ts-ignore
-      const paths:string[] = argv.path ? ["--", argv.path] : [];
-      const  { from, to } = argv;
+      const paths: string[] = argv.path ? ["--", argv.path] : [];
+      const { from, to } = argv;
       const commits = await getCommits(from as string, to as string, paths);
       const result = await analyzeCommits({}, { commits, logger: console });
-      
-      if(result === null) {
+
+      if (result === null) {
         return process.exit(0);
       }
-      
+
       return process.exit(1);
     }
   )
