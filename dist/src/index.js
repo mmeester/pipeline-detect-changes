@@ -235,6 +235,7 @@ import { fields, parse } from "git-log-parser";
 import { array } from "get-stream";
 // @ts-ignore
 import { analyzeCommits } from "@semantic-release/commit-analyzer";
+import { getProjectConfig } from "./lib/project-config.js";
 Object.assign(fields, {
     hash: "H",
     message: "B",
@@ -298,7 +299,7 @@ var getCommits = function() {
         return _ref.apply(this, arguments);
     };
 }();
-var argv = yargs(process.argv.slice(2)).scriptName("pipeline-detect-changes").usage("$0 <cmd> [args]").command("detect", "Detect changes", function(yargs) {
+yargs(process.argv.slice(2)).scriptName("pipeline-detect-changes").usage("$0 <cmd> [args]").command("detect", "Detect changes", function(yargs) {
     yargs.option("from", {
         describe: "The commit hash to start from",
         type: "string"
@@ -312,7 +313,7 @@ var argv = yargs(process.argv.slice(2)).scriptName("pipeline-detect-changes").us
     });
 }, function() {
     var _ref = _async_to_generator(function(argv) {
-        var paths, from, to, commits, result;
+        var paths, from, to, commits, config, result;
         return _ts_generator(this, function(_state) {
             switch(_state.label){
                 case 0:
@@ -328,9 +329,10 @@ var argv = yargs(process.argv.slice(2)).scriptName("pipeline-detect-changes").us
                     ];
                 case 1:
                     commits = _state.sent();
+                    config = getProjectConfig(argv.path);
                     return [
                         4,
-                        analyzeCommits({}, {
+                        analyzeCommits(config, {
                             commits: commits,
                             logger: console
                         })
